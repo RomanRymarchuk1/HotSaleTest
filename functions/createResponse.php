@@ -1,5 +1,5 @@
 <?php
-function createResponse(bool $status, string $message, int $statusCode)
+function createResponse(bool $status, string $message, int $statusCode): array
 {
     $response = [
         'status' => $status,
