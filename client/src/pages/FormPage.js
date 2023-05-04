@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Button, Form } from "react-bootstrap";
@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import postUser from "../api/postUser";
 
 const FormPage = () => {
-   const navigate = useNavigate();
+   const [errorMessage, setErrorMessage] = useState();
+   const navigate = useNavigate(null);
 
    const initialValues = {
       name: "",
@@ -28,24 +29,23 @@ const FormPage = () => {
    });
 
    const handleSubmit = async (user) => {
-      const { status } = await postUser(JSON.stringify(user));
+      const { status, message } = await postUser(JSON.stringify(user));
 
-      if (status) {
-         navigate("/done");
-      }
+      status ? navigate("/done") : setErrorMessage(message);
    };
 
    return (
       <>
-         <h1 className="text-center">Form</h1>
+         <h1 className="text-center mt-4 ">Registration Form</h1>
+         <p className="text-danger text-center my-3 text-uppercase ">{errorMessage}</p>
          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
             {({ handleSubmit, handleChange, touched, errors }) => (
                <Form noValidate onSubmit={handleSubmit}>
                   <Form.Group className="mb-3" controlId="formName">
-                     <Form.Label>Name</Form.Label>
+                     <Form.Label className="mx-3">Name</Form.Label>
                      <Form.Control
                         onChange={handleChange}
-                        placeholder="Name"
+                        placeholder="Name..."
                         name="name"
                         label="Name"
                         isInvalid={!!errors.name}
@@ -54,10 +54,10 @@ const FormPage = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="formSurname">
-                     <Form.Label>Surname</Form.Label>
+                     <Form.Label className="mx-3">Surname</Form.Label>
                      <Form.Control
                         onChange={handleChange}
-                        placeholder="Surname"
+                        placeholder="Surname..."
                         name="surname"
                         isInvalid={!!errors.surname}
                      />
@@ -65,10 +65,10 @@ const FormPage = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="formSurname">
-                     <Form.Label>Email</Form.Label>
+                     <Form.Label className="mx-3">Email</Form.Label>
                      <Form.Control
                         onChange={handleChange}
-                        placeholder="Email"
+                        placeholder="Email..."
                         name="email"
                         isInvalid={!!errors.email}
                      />
@@ -76,9 +76,9 @@ const FormPage = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="formSurname">
-                     <Form.Label>Password</Form.Label>
+                     <Form.Label className="mx-3">Password</Form.Label>
                      <Form.Control
-                        placeholder="Password"
+                        placeholder="Password..."
                         type="password"
                         name="password"
                         onChange={handleChange}
@@ -88,10 +88,10 @@ const FormPage = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="formSurname">
-                     <Form.Label>Password repeat</Form.Label>
+                     <Form.Label className="mx-3">Password repeat</Form.Label>
 
                      <Form.Control
-                        placeholder="Password repeat"
+                        placeholder="Password repeat..."
                         type="password"
                         name="passwordRepeat"
                         onChange={handleChange}
@@ -102,7 +102,7 @@ const FormPage = () => {
                      </Form.Control.Feedback>
                   </Form.Group>
 
-                  <Button className="btn-success" type="submit">
+                  <Button className="btn-success btn-block" type="submit">
                      Submit
                   </Button>
                </Form>

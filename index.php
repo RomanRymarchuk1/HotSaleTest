@@ -17,7 +17,7 @@ $userEmail = $postUserData['email'];
 $userPass = $postUserData['password'];
 $userPassRep = $postUserData['passwordRepeat'];
 
-$response;
+$response = null;
 
 if(str_contains($userEmail, "@")){
 
@@ -29,12 +29,12 @@ if(str_contains($userEmail, "@")){
                 $isExist = true;
                 break;
             }
-        };
+        }
                 
         if($isExist){
-            $response = createResponse(false, 'User already exists', 201);
+            $response = createResponse(false, 'User with this email already exists', 201);
 
-            logUser($userEmail, 'already exists in');
+            logUser($userEmail, 'already exists');
                 
         } else {
             $newUser = [
@@ -44,15 +44,15 @@ if(str_contains($userEmail, "@")){
                 "password" => md5($userPass),
             ];
 
-            array_push($usersArr, $newUser);
+            $usersArr[] = $newUser;
             file_put_contents("users.json", json_encode($usersArr)); 
 
             $response = createResponse(true, 'User is added', 201);
             logUser($userEmail, 'added');
-        };
+        }
 
     } else {
-        $response = createResponse(false, 'Paswords is different', 400);
+        $response = createResponse(false, 'Passwords is different', 400);
     }
 
 } else {
