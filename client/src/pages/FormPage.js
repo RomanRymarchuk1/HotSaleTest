@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import postUser from "../api/postUser";
 
 const FormPage = () => {
-   const [errorMessage, setErrorMessage] = useState();
+   const [errorMessage, setErrorMessage] = useState(null);
    const navigate = useNavigate(null);
 
    const initialValues = {
